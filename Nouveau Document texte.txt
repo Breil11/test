@@ -1,0 +1,102 @@
+
+#!/bin/bash
+echo " ################# Bienvenue au jeu de combat ##############"
+echo " >l'humain 👨(pour 50 points de vie et 10 points de dégat)"
+echo " >l' orc 👹 (pour 100 points de vie et 9 points de dégat)"
+
+read -p "Tapez (1) pour l'humain et (2) pour l'orc: " race 
+vieH=50
+degatH=10
+vieO=100
+degatO=9
+tour=1
+if [ $race -eq 1 ];
+    then 
+        echo "Vous etes un humain et affrontez l'orc"
+        while [ $vieH -gt 0 ]
+        do
+        #pour tenir compte du fait que l'attaque peut etre ratée, j'ai du faire un tirage au hazard d'un nombre compris entre 0-100 de telle sorte que si le nombre tiré est inf ou égal à 25 l'attaque est ratée et inversement pour l'attaque réussie
+        max=100
+        nombre=$RANDOM
+        let "nombre %= $max"
+        #echo "Nombre aléatoire $nombre"
+        echo ""
+            if [ $nombre -le 25 ];
+            then
+                echo "Tour $tour"
+                echo "Nombre aléatoire choisi $nombre"
+                echo "Le tour $tour vous est défavorable, vous avez raté votre attaque"
+                let "vieH -=9"
+                let "tour -=1"
+                echo " ->votre vie restante $vieH"
+                echo " ->vie orc restante $vieO"
+                echo "------------------------"
+            if [ $vieH -eq 9 ]
+            then
+                echo "vous etes mort"
+                echo "le combattant gagnant est l'orc avec $vieO points de vie restants"
+                break
+            fi
+            else
+                echo "Tour $tour"
+                echo "Nombre aléatoire choisi $nombre"
+                echo "Le tour $tour vous est favorable, vous avez réussi votre attaque"
+                let "vieO-=10"
+                let "tour +=1"
+                echo " ->votre vie restante $vieH"
+                echo " ->vie orc restante $vieO"
+                echo "-------------------------"
+                if [ $vieO -eq 10 ]
+                then
+                    echo "vous avez gagné"
+                    echo "le combattant gagnant est l'humain avec $vieH points de vie restants"
+                    break
+                fi
+            fi
+        done
+ 
+        
+else
+        echo "vous ets orc et affrontez l'humain"
+       while [ $vieO -gt 0 ]
+        do
+        #pour tenir compte du fait que l'attaque peut etre ratée, j'ai du faire un tirage au hazard d'un nombre compris entre 0-100 de telle sorte que si le nombre tiré est inf ou égal à 25 l'attaque est ratée et inversement pour l'attaque réussie
+        max=100
+        nombre=$RANDOM
+        let "nombre %= $max"
+        #echo "Nombre aléatoire $nombre"
+        echo ""
+            if [ $nombre -le 25 ];
+            then
+                echo "Tour $tour"
+                echo "Nombre aléatoire choisi $nombre"
+                echo "Le tour $tour vous est défavorable, vous avez raté votre attaque"
+                let "vieH -=9"
+                let "tour -=1"
+                echo " ->votre vie restante $vieH"
+                echo " ->vie orc restante $vieO"
+                echo "------------------------"
+            if [ $vieO -eq 10 ]
+            then
+                echo "vous etes mort"
+                echo "le combattant gagnant est l'humain avec $vieH points de vie restants"
+                break
+            fi
+            else
+                echo "Tour $tour"
+                echo "Nombre aléatoire choisi $nombre"
+                echo "Le tour $tour vous est favorable, vous avez réussi votre attaque"
+                let "vieH-=9"
+                let "tour +=1"
+                echo " ->votre vie restante $vieO"
+                echo " ->vie homme restante $vieH"
+                echo "-------------------------"
+                if [ $vieH -eq 9 ]
+                then
+                    echo "vous avez gagné"
+                    echo "le combattant gagnant est l'orc avec $vieO points de vie restants"
+                    break
+                fi
+            fi
+        done
+fi
